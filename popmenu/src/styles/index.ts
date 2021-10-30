@@ -40,16 +40,19 @@ interface Theme {
   backgroundColor: string;
   textColor: string;
   greyColor: string;
+  ctaColor: string;
   isDark: boolean;
 }
 
 const offWhite = '#FAFAFA';
 const offBlack = '#222222';
+const ctaColor = '#4385F2';
 
 const darkTheme = {
   backgroundColor: offBlack,
   textColor: offWhite,
   greyColor: '#BBBBBB',
+  ctaColor,
   isDark: true,
 };
 
@@ -57,6 +60,7 @@ const lightTheme = {
   backgroundColor: offWhite,
   textColor: offBlack,
   greyColor: '#999999',
+  ctaColor,
   isDark: false,
 };
 
