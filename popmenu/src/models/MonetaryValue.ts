@@ -5,4 +5,5 @@ export interface MonetaryValue {
 
 export enum Currency {
   USD = 'usd',
+  JPY = 'jpy',
 }
