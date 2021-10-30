@@ -1,14 +1,20 @@
 import {Currency, MonetaryValue} from 'models/MonetaryValue';
 
 export const formatValue = (value: MonetaryValue) => {
+  const absValue = Math.abs(value.value);
   const {symbol, symbolPosition, decimalSeparator, decimalPlaces} =
     getCurrencyDetails(value.currency);
   const resultWithPlaces = handleDecimalPlaces(
-    value.value,
+    absValue,
     decimalPlaces,
     decimalSeparator,
   );
-  return handleSymbol(resultWithPlaces, symbolPosition, symbol);
+  const isNegative = !!(value.value !== 0 && absValue / value.value === -1);
+  return `${isNegative ? '-' : ''}${handleSymbol(
+    resultWithPlaces,
+    symbolPosition,
+    symbol,
+  )}`;
 };
 
 interface CurrencyDetails {
@@ -17,7 +23,8 @@ interface CurrencyDetails {
   decimalSeparator: string;
   decimalPlaces: number;
 }
-export const getCurrencyDetails = (c: Currency) => {
+
+export const getCurrencyDetails = (c: Currency): CurrencyDetails => {
   switch (c) {
     case Currency.JPY:
       return {
