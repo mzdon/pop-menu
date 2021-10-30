@@ -1,7 +1,9 @@
 import React from 'react';
 
+import {faTrash} from '@fortawesome/free-solid-svg-icons';
 import {Image, StyleSheet, View} from 'react-native';
 
+import IconButton from 'components/IconButton';
 import Spacer from 'components/Spacer';
 import Text from 'components/Text';
 import uhoh from 'images/uhoh.png';
@@ -11,12 +13,13 @@ import {formatValue} from 'utils/MonetaryValue';
 
 interface Props {
   item: MenuItem;
+  onRemove: (id: string) => void;
 }
 
-const MenuItemCard = ({item}: Props): React.ReactElement<Props> => {
+const MenuItemCard = ({item, onRemove}: Props): React.ReactElement<Props> => {
   const theme = useTheme();
 
-  const {title, description, imageUrl, price} = item;
+  const {id, title, description, imageUrl, price} = item;
   const formattedPrice = formatValue(price);
 
   return (
@@ -49,22 +52,31 @@ const MenuItemCard = ({item}: Props): React.ReactElement<Props> => {
               {formattedPrice}
             </Text>
           </View>
+          <View
+            style={[
+              styles.deleteContainer,
+              {backgroundColor: theme.backgroundColor},
+            ]}>
+            <IconButton
+              icon={faTrash}
+              iconColor={theme.ctaColor}
+              onPress={() => onRemove(id)}
+            />
+          </View>
         </View>
         <View style={styles.detailsContainer}>
           <Spacer />
-          <View style={styles.titleContainer}>
-            <Text style={[textStyles.base, styles.title]} numberOfLines={2}>
+          <>
+            <Text style={textStyles.base} numberOfLines={2}>
               {title}
             </Text>
-          </View>
+          </>
           <Spacer heightScale={0.5} />
-          <View style={styles.descriptionContainer}>
-            <Text
-              style={[textStyles.subText, styles.description]}
-              numberOfLines={3}>
+          <>
+            <Text style={textStyles.subText} numberOfLines={3}>
               {description}
             </Text>
-          </View>
+          </>
           <Spacer />
         </View>
       </View>
@@ -97,7 +109,6 @@ const styles = StyleSheet.create({
     ...commonStyles.flex1,
     ...commonStyles.padding,
   },
-  details: {},
   priceContainer: {
     ...commonStyles.padding,
     position: 'absolute',
@@ -105,13 +116,15 @@ const styles = StyleSheet.create({
     right: 20,
     borderTopEndRadius: 3,
   },
+  deleteContainer: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    borderRadius: 25,
+  },
   price: {
     lineHeight: baseFontSize * 1.5,
   },
-  titleContainer: {},
-  title: {},
-  descriptionContainer: {},
-  description: {},
 });
 
 export default MenuItemCard;

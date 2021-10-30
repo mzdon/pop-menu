@@ -18,7 +18,7 @@ interface Props {}
 const stickyIndicies = [0];
 
 const MenuScreen = (): React.ReactElement<Props> => {
-  const {menu} = useMenuContext();
+  const {menu, removeMenuItem} = useMenuContext();
   const theme = useTheme();
   const navigation = useNavigation<MenuScreenNavigationProp>();
 
@@ -43,7 +43,7 @@ const MenuScreen = (): React.ReactElement<Props> => {
   );
 
   const renderItem: ListRenderItem<MenuItem> = ({item}) => {
-    return <MenuItemCard item={item} />;
+    return <MenuItemCard item={item} onRemove={removeMenuItem} />;
   };
 
   return (
