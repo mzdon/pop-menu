@@ -50,6 +50,34 @@ Present a control that enables to remove a Menu Item
 
 Include unit tests
 
+### Approach
+
+#### New dependencies
+- @react-navigation
+- @react-native-fontawesome
+
+Create stack navigator with MenuScreen and AddMenuItemScreen. Display Menu title as screen header title. Plus icon as header right, takes you to Add Menu Item screen. List of inputs: url, title, description, price. Url input attempts to load and display image as user types and is invalid until image loads successfully. Title and price required. Description optional.
+
+Wrap app in ErrorBoundary and KeyboardAvoidingScreen.
+
+Display Trash icon in top right of MenuItemCard component. When pressed, show alert "Are you sure you want to delete ${title}?" No / Yes
+
+Move state into React Context wrapping navigation stack. Expose a useMenuContext() hook.
+
+```TypeScript
+interface MenuContext {
+  state: Menu;
+  addMenuItem: (item: MenuItem) => void;
+  removeMenuItem: (id: string) => void;
+}
+```
+
+Unit test:
+- Initial state
+- Add a menu item
+- Throw exception if data is invalid
+- Remove a menu item
+
 ## Level 3: Inline editing
 
 Present an interface that enables user to edit Menu Items inline with immediate updates:
