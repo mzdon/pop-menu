@@ -8,17 +8,17 @@ import IconButton from 'components/IconButton';
 import MenuItemCard from 'components/MenuItemCard';
 import Spacer from 'components/Spacer';
 import Text from 'components/Text';
-import {mockMenu} from 'data';
 import {MenuItem} from 'models/MenuItem';
 import {ADD_MENU_ITEM, MenuScreenNavigationProp} from 'navigation/RouteTypes';
 import {commonStyles, textStyles, useTheme} from 'styles';
+import {useMenuContext} from 'providers/MenuProvider';
 
 interface Props {}
 
 const stickyIndicies = [0];
 
 const MenuScreen = (): React.ReactElement<Props> => {
-  const menu = mockMenu;
+  const {menu} = useMenuContext();
   const theme = useTheme();
   const navigation = useNavigation<MenuScreenNavigationProp>();
 
