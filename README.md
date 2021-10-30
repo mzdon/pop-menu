@@ -8,6 +8,35 @@ Create a Menu as a series of Menu Item Cards having:
 - Description
 - Price
 
+### Approach
+
+Simple scrolling card interface. Display Menu name as title. Cards display image up top, title and description down below, and price on a tab-like UI component above name overlapping image. Top level state stored with useState().
+
+```TypeScript
+interface Menu {
+  id: string;
+  title: string;
+  items: MenuItem[];
+}
+
+interface MenuItem {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
+  price: MonetaryValue;
+}
+
+interface MonetaryValue {
+  value: number;
+  currency: Currency;
+}
+
+enum Currency {
+  USD = 'usd'
+}
+```
+
 ## Level 2: Add and remove menu items
 
 Create an interface that enables users to create new Menu Items with:
