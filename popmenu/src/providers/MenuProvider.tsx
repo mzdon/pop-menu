@@ -1,12 +1,16 @@
 import React from 'react';
 
+import {v4 as uuid} from 'uuid';
+
 import {mockMenu} from 'data';
 import {Menu} from 'models/Menu';
 import {MenuItem} from 'models/MenuItem';
 
+type MenuItemData = Omit<MenuItem, 'id'> & {id?: string};
+
 interface MenuContextValue {
   menu: Menu;
-  addMenuItem: (item: MenuItem) => void;
+  addMenuItem: (item: MenuItemData) => void;
   removeMenuItem: (id: string) => void;
 }
 
@@ -14,7 +18,7 @@ const MenuContext = React.createContext<MenuContextValue | null>(null);
 
 type Props = React.PropsWithChildren<{}>;
 
-const validateItem = (item: MenuItem) => {
+const validateItem = (item: MenuItemData) => {
   const {title, imageUrl, price} = item;
   return !!(title && imageUrl && price);
 };
@@ -22,13 +26,16 @@ const validateItem = (item: MenuItem) => {
 const MenuProvider = ({children}: Props): React.ReactElement<Props> => {
   const [menu, setMenu] = React.useState(mockMenu);
 
-  const addMenuItem = React.useCallback((item: MenuItem) => {
+  const addMenuItem = React.useCallback((item: MenuItemData) => {
     setMenu(state => {
       if (!validateItem(item)) {
         throw new Error("The new MenuItem data doesn't look right!");
       }
       const nextState = {...state};
-      nextState.items.push(item);
+      nextState.items.push({
+        id: uuid(),
+        ...item,
+      });
       return nextState;
     });
   }, []);

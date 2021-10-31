@@ -1,12 +1,12 @@
 import React from 'react';
 
 import {faTrash} from '@fortawesome/free-solid-svg-icons';
-import {Alert, Image, StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 
 import IconButton from 'components/IconButton';
+import MenuItemImage from 'components/MenuItemImage';
 import Spacer from 'components/Spacer';
 import Text from 'components/Text';
-import uhoh from 'images/uhoh.png';
 import {MenuItem} from 'models/MenuItem';
 import {baseFontSize, commonStyles, textStyles, useTheme} from 'styles';
 import {formatValue} from 'utils/MonetaryValue';
@@ -43,13 +43,7 @@ const MenuItemCard = ({item, onRemove}: Props): React.ReactElement<Props> => {
             backgroundColor: theme.backgroundColor,
           },
         ]}>
-        <View
-          style={[styles.imageContainer, {backgroundColor: theme.greyColor}]}>
-          <Image
-            style={styles.image}
-            source={{uri: imageUrl}}
-            defaultSource={uhoh}
-          />
+        <MenuItemImage source={{uri: imageUrl}}>
           <View
             style={[
               styles.priceContainer,
@@ -70,7 +64,7 @@ const MenuItemCard = ({item, onRemove}: Props): React.ReactElement<Props> => {
               onPress={onVerifyRemove}
             />
           </View>
-        </View>
+        </MenuItemImage>
         <View style={styles.detailsContainer}>
           <Spacer />
           <>
@@ -100,13 +94,6 @@ const styles = StyleSheet.create({
     ...commonStyles.shadow,
     borderWidth: 1,
     borderRadius: 3,
-  },
-  imageContainer: {
-    height: 120,
-  },
-  image: {
-    height: '100%',
-    width: '100%',
   },
   detailsContainer: {
     ...commonStyles.flex1,

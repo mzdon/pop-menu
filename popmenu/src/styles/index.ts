@@ -49,6 +49,7 @@ interface Theme {
   greyColor: string;
   ctaColor: string;
   errorColor: string;
+  confirmColor: string;
   isDark: boolean;
 }
 
@@ -56,6 +57,7 @@ const offWhite = '#FAFAFA';
 const offBlack = '#222222';
 const ctaColor = '#4385F2';
 const errorColor = '#C34F4D';
+const confirmColor = '#2A6C2C';
 
 const darkTheme = {
   backgroundColor: offBlack,
@@ -63,6 +65,7 @@ const darkTheme = {
   greyColor: '#BBBBBB',
   ctaColor,
   errorColor,
+  confirmColor,
   isDark: true,
 };
 
@@ -72,6 +75,7 @@ const lightTheme = {
   greyColor: '#999999',
   ctaColor,
   errorColor,
+  confirmColor,
   isDark: false,
 };
 

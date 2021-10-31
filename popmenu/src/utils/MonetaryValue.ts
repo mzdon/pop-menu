@@ -24,6 +24,8 @@ interface CurrencyDetails {
   decimalPlaces: number;
 }
 
+export const ALL_SPECIAL_CHARS_REGEX = /[¥$,.]/g;
+
 export const getCurrencyDetails = (c: Currency): CurrencyDetails => {
   switch (c) {
     case Currency.JPY:

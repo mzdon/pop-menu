@@ -1,6 +1,11 @@
 import React from 'react';
 
-import {KeyboardAvoidingView, SafeAreaView, StatusBar} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  StatusBar,
+} from 'react-native';
 
 import RootNavigator from 'navigation/RootNavigator';
 import {useTheme, commonStyles} from 'styles';
@@ -15,7 +20,9 @@ const App = () => {
 
   return (
     <SafeAreaView style={rootStyle}>
-      <KeyboardAvoidingView style={rootStyle}>
+      <KeyboardAvoidingView
+        style={rootStyle}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <StatusBar barStyle={theme.isDark ? 'light-content' : 'dark-content'} />
         <RootNavigator />
       </KeyboardAvoidingView>
