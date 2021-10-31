@@ -4,7 +4,7 @@ import {IconProp} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
 
-import {baseFontSize, commonStyles} from 'styles';
+import {baseFontSize, commonStyles, useTheme} from 'styles';
 
 interface Props {
   icon: IconProp;
@@ -25,12 +25,17 @@ const IconButton = ({
   disabled = false,
   onPress,
 }: Props): React.ReactElement<Props> => {
+  const theme = useTheme();
   return (
     <TouchableOpacity
       style={[styles.container, containerStyle]}
       onPress={onPress}
       disabled={disabled}>
-      <FontAwesomeIcon icon={icon} size={SIZE * iconScale} color={iconColor} />
+      <FontAwesomeIcon
+        icon={icon}
+        size={SIZE * iconScale}
+        color={disabled ? theme.greyColor : iconColor}
+      />
     </TouchableOpacity>
   );
 };
