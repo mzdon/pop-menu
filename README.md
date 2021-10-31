@@ -88,6 +88,28 @@ Present an interface that enables user to edit Menu Items inline with immediate 
 
 Include unit tests
 
+### Approach
+
+Change delete icon on MenuItemCard component to gear icon when pressed displays an alert to Edit or Delete. Delete shows confirmation alert still. Edit checks if there's an existing item being edited. If there is show an alert stating such and ask if a user wants to see that item or continue with editing this item.
+
+Items being edited will show confirm and cancel icons on the item and the fields will be displayed with an underline. Confirm will be disabled if the data is invalid.
+
+```TypeScript
+interface MenuContext {
+  state: {
+    data: Menu;
+    editableItemId: string | null
+  },
+  addMenuItem: (item: MenuItem) => void;
+  removeMenuItem: (id: string) => void;
+  updateItem: (id: string, data: MenuItem) => void;
+}
+```
+
+Unit test:
+- Updating an item
+- Throw exception if data is invalid
+
 ## Level 4: Bonus - Multiple menu managment
 
 Present an interface that enables users to have multiple menus
