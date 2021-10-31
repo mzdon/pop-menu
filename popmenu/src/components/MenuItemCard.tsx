@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {faTrash} from '@fortawesome/free-solid-svg-icons';
-import {Image, StyleSheet, View} from 'react-native';
+import {Alert, Image, StyleSheet, View} from 'react-native';
 
 import IconButton from 'components/IconButton';
 import Spacer from 'components/Spacer';
@@ -21,6 +21,13 @@ const MenuItemCard = ({item, onRemove}: Props): React.ReactElement<Props> => {
 
   const {id, title, description, imageUrl, price} = item;
   const formattedPrice = formatValue(price);
+
+  const onVerifyRemove = () => {
+    Alert.alert(`Are you sure you want to delete '${title}'?`, undefined, [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'Delete', style: 'destructive', onPress: () => onRemove(id)},
+    ]);
+  };
 
   return (
     <View
@@ -59,8 +66,8 @@ const MenuItemCard = ({item, onRemove}: Props): React.ReactElement<Props> => {
             ]}>
             <IconButton
               icon={faTrash}
-              iconColor={theme.ctaColor}
-              onPress={() => onRemove(id)}
+              iconColor={theme.errorColor}
+              onPress={onVerifyRemove}
             />
           </View>
         </View>
@@ -90,13 +97,9 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     ...commonStyles.flex1,
+    ...commonStyles.shadow,
     borderWidth: 1,
     borderRadius: 3,
-    shadowOpacity: 0.4,
-    shadowOffset: {
-      width: 1,
-      height: 2,
-    },
   },
   imageContainer: {
     height: 120,
@@ -117,6 +120,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 3,
   },
   deleteContainer: {
+    ...commonStyles.shadow,
     position: 'absolute',
     top: 4,
     right: 4,

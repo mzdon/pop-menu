@@ -20,7 +20,10 @@ const RootNavigator = () => {
         <Stack.Navigator
           screenOptions={{
             headerStyle: {backgroundColor: theme.backgroundColor},
-            headerTitleStyle: {color: theme.textColor},
+            headerTitleStyle: {
+              color: theme.textColor,
+              maxWidth: 260,
+            },
             headerTintColor: theme.ctaColor,
             cardStyle: {backgroundColor: theme.backgroundColor},
           }}>

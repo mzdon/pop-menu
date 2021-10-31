@@ -10,6 +10,13 @@ export const commonStyles: Record<string, ViewStyle> = {
   padding: {
     paddingHorizontal: basePadding,
   },
+  shadow: {
+    shadowOpacity: 0.4,
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+  },
 };
 
 export const textStyles: Record<string, TextStyle> = {
@@ -41,18 +48,21 @@ interface Theme {
   textColor: string;
   greyColor: string;
   ctaColor: string;
+  errorColor: string;
   isDark: boolean;
 }
 
 const offWhite = '#FAFAFA';
 const offBlack = '#222222';
 const ctaColor = '#4385F2';
+const errorColor = '#C34F4D';
 
 const darkTheme = {
   backgroundColor: offBlack,
   textColor: offWhite,
   greyColor: '#BBBBBB',
   ctaColor,
+  errorColor,
   isDark: true,
 };
 
@@ -61,6 +71,7 @@ const lightTheme = {
   textColor: offBlack,
   greyColor: '#999999',
   ctaColor,
+  errorColor,
   isDark: false,
 };
 

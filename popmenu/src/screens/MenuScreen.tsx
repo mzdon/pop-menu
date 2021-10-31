@@ -55,6 +55,9 @@ const MenuScreen = (): React.ReactElement<Props> => {
         renderItem={renderItem}
         keyExtractor={item => item.id}
         ListHeaderComponent={MenuHeader}
+        ListEmptyComponent={
+          <Text style={styles.emptyMessage}>No menu items! :_(</Text>
+        }
         ItemSeparatorComponent={Spacer}
         stickyHeaderIndices={stickyIndicies}
       />
@@ -68,6 +71,10 @@ const styles = StyleSheet.create({
   header: {
     ...commonStyles.padding,
     ...textStyles.header,
+  },
+  emptyMessage: {
+    ...textStyles.subHeader,
+    ...commonStyles.padding,
   },
 });
 
