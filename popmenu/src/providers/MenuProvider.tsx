@@ -24,7 +24,10 @@ const validateItem = (item: MenuItemData) => {
 };
 
 const MenuProvider = ({children}: Props): React.ReactElement<Props> => {
-  const [menu, setMenu] = React.useState(mockMenu);
+  const [menu, setMenu] = React.useState({
+    ...mockMenu,
+    items: [...mockMenu.items],
+  });
 
   const addMenuItem = React.useCallback((item: MenuItemData) => {
     setMenu(state => {
