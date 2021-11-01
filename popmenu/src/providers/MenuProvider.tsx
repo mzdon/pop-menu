@@ -4,9 +4,7 @@ import {v4 as uuid} from 'uuid';
 
 import {getMockMenu} from 'data';
 import {Menu} from 'models/Menu';
-import {MenuItem} from 'models/MenuItem';
-
-export type MenuItemData = Omit<MenuItem, 'id'> & {id?: string};
+import {MenuItem, MenuItemData} from 'models/MenuItem';
 
 interface State {
   menu: Menu;
@@ -107,7 +105,11 @@ const MenuProvider = ({children}: Props): React.ReactElement<Props> => {
         ...lastState,
         menu: {
           ...menu,
-          items: menu.items.splice(menuItemIndex, 1, updatedItem),
+          items: [
+            ...menu.items.slice(0, menuItemIndex),
+            updatedItem,
+            ...menu.items.slice(menuItemIndex + 1),
+          ],
         },
       };
     });

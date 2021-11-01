@@ -1,11 +1,13 @@
 import React from 'react';
 
 import {
+  StyleProp,
   StyleSheet,
   TextInput,
   TextInputProps,
   TextStyle,
   View,
+  ViewStyle,
 } from 'react-native';
 
 import Text from 'components/Text';
@@ -14,12 +16,18 @@ import {commonStyles, textStyles, useTheme} from 'styles';
 export interface InputProps extends TextInputProps {
   label?: string;
   labelStyle?: TextStyle;
+  containerStyle?: StyleProp<ViewStyle>;
   error?: string;
+}
+
+interface SelectionState {
+  selection: {start: number; end: number} | undefined;
+  initialFocusHappened: boolean;
 }
 
 const Input = React.forwardRef<TextInput, InputProps>(
   (
-    {label, labelStyle, error, style, ...rest}: InputProps,
+    {label, labelStyle, error, style, containerStyle, ...rest}: InputProps,
     ref,
   ): React.ReactElement<InputProps> => {
     const theme = useTheme();
@@ -29,7 +37,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
       borderColor: color,
     };
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, containerStyle]}>
         {!!label && (
           <Text style={[themeStyle, styles.label, labelStyle]}>{label}</Text>
         )}
@@ -46,7 +54,6 @@ const Input = React.forwardRef<TextInput, InputProps>(
 
 const styles = StyleSheet.create({
   container: {
-    ...commonStyles.padding,
     ...commonStyles.flex1,
     flexGrow: 1,
   },

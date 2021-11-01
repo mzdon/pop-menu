@@ -7,3 +7,5 @@ export interface MenuItem {
   description: string;
   price: MonetaryValue;
 }
+
+export type MenuItemData = Omit<MenuItem, 'id'> & {id?: string};

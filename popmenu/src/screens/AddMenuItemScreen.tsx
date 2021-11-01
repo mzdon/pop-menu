@@ -1,7 +1,8 @@
 import React from 'react';
 
+import {faCheck} from '@fortawesome/free-solid-svg-icons';
 import {useNavigation} from '@react-navigation/native';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
 import IconButton from 'components/IconButton';
@@ -10,26 +11,59 @@ import MenuItemImage from 'components/MenuItemImage';
 import MonetaryInput from 'components/MonetaryInput';
 import Spacer from 'components/Spacer';
 import Text from 'components/Text';
+import {Currency, MonetaryValue} from 'models/MonetaryValue';
 import {AddMenuItemScreenNavigationProp} from 'navigation/RouteTypes';
-import {useAddMenuItemScreenHelper} from 'screens/AddMenuItemScreenHelper';
-import {commonStyles, textStyles, useTheme} from 'styles';
-import {faCheck} from '@fortawesome/free-solid-svg-icons';
 import {useMenuContext} from 'providers/MenuProvider';
+import {commonStyles, textStyles, useTheme} from 'styles';
+import {useEditMenuItem} from 'utils/EditMenuItem';
+import {useMenuItemValidation} from 'utils/Validation';
+
+interface StateData {
+  title: string;
+  description: string;
+  imageUrl: string;
+  price: MonetaryValue;
+}
+
+export const useAddMenuItemScreenHelper = () => {
+  const [state, setState] = React.useState<StateData>({
+    title: '',
+    description: '',
+    imageUrl: '',
+    price: {
+      value: 0,
+      currency: Currency.USD,
+    },
+  });
+
+  const {onChangeDescription, onChangeImageUrl, onChangePrice, onChangeTitle} =
+    useEditMenuItem(setState);
+
+  return {
+    menuItem: state,
+    onChangeImageUrl,
+    onChangeTitle,
+    onChangeDescription,
+    onChangePrice,
+  };
+};
 
 const AddMenuItemScreen = () => {
   const {
-    state,
-    hasErrors,
-    onImageError,
-    onImageLoad,
+    menuItem,
     onChangeDescription,
     onChangeImageUrl,
     onChangePrice,
     onChangeTitle,
-    validate,
   } = useAddMenuItemScreenHelper();
-  const {errors, data} = state;
-  const {imageUrl, title, description, price} = data;
+  const {imageUrl, title, description, price} = menuItem;
+
+  const {errors, hasErrors, validate, update, onImageLoad, onImageError} =
+    useMenuItemValidation();
+
+  React.useEffect(() => {
+    update(menuItem);
+  }, [menuItem, update]);
 
   const {addMenuItem} = useMenuContext();
   const theme = useTheme();
@@ -37,10 +71,9 @@ const AddMenuItemScreen = () => {
 
   const SubmitButton = React.useCallback(() => {
     const onSubmit = () => {
-      const isValid = validate();
-      console.log(isValid);
+      const isValid = validate(menuItem);
       if (isValid) {
-        addMenuItem(data);
+        addMenuItem(menuItem);
         navigation.goBack();
       }
     };
@@ -52,7 +85,14 @@ const AddMenuItemScreen = () => {
         onPress={onSubmit}
       />
     );
-  }, [addMenuItem, data, hasErrors, navigation, theme.confirmColor, validate]);
+  }, [
+    addMenuItem,
+    hasErrors,
+    menuItem,
+    navigation,
+    theme.confirmColor,
+    validate,
+  ]);
 
   React.useEffect(() => {
     navigation.setOptions({
@@ -73,33 +113,36 @@ const AddMenuItemScreen = () => {
         onError={onImageError}
       />
       <Spacer />
-      <Input
-        label="Image URL"
-        value={imageUrl}
-        onChangeText={onChangeImageUrl}
-        error={errors.imageUrl}
-      />
-      <Spacer />
-      <Input
-        label="Title"
-        value={title}
-        onChangeText={onChangeTitle}
-        error={errors.title}
-      />
-      <Spacer />
-      <Input
-        label="Description"
-        value={description}
-        onChangeText={onChangeDescription}
-        error={errors.description}
-      />
-      <MonetaryInput
-        label="Price"
-        value={price.value}
-        currency={price.currency}
-        onChangeText={onChangePrice}
-        error={errors.price}
-      />
+      <View style={styles.inputsContainer}>
+        <Input
+          label="Image URL"
+          value={imageUrl}
+          onChangeText={onChangeImageUrl}
+          error={errors.imageUrl}
+          selectTextOnFocus
+        />
+        <Spacer />
+        <Input
+          label="Title"
+          value={title}
+          onChangeText={onChangeTitle}
+          error={errors.title}
+        />
+        <Spacer />
+        <Input
+          label="Description"
+          value={description}
+          onChangeText={onChangeDescription}
+          error={errors.description}
+        />
+        <MonetaryInput
+          label="Price"
+          value={price.value}
+          currency={price.currency}
+          onChangeText={onChangePrice}
+          error={errors.price}
+        />
+      </View>
       <Spacer />
     </ScrollView>
   );
@@ -107,11 +150,15 @@ const AddMenuItemScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    ...commonStyles.flex1,
   },
   header: {
     ...commonStyles.padding,
     ...textStyles.header,
+  },
+  inputsContainer: {
+    ...commonStyles.padding,
+    ...commonStyles.flex1,
   },
 });
 
