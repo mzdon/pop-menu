@@ -123,3 +123,32 @@ Unit test:
 ## Level 4: Bonus - Multiple menu managment
 
 Present an interface that enables users to have multiple menus
+
+### Approach
+
+Introduce a Drawer navigator to the app. Each item in the drawer should correspond to an existing Menu, plus an Add Menu item that navigates to an Add Menu screen. Pressing a drawer item updates the MenuSceen `menuId` route param. Show menu title at the top of the screen with a pencil icon to enable editing. While editing is enabled, display a confirm and cancel button where the confirm button is disabled if the title is empty. Add a Delete Menu button at the very bottom of the screen that shows a confirmation dialog. Update context state update calls to include `menuId`.
+
+```TypeScript
+interface MenusContext {
+  state: {
+    [id: string]: Menu
+  };
+  addMenu: (title: string) => void;
+  removeMen: (menuId: string) => void;
+  updateMenuTitle: (menuId: string, title: string) => void;
+  addMenuItem: (menuId: string, item: MenuItem) => void;
+  removeMenuItem: (menuId: string, itemId: string) => void;
+  updateMenuItem: (menuId: string, itemId: string, item: MenuItem) => void;
+}
+```
+
+Unit test
+- Add menu
+- Throw exception if menu title is empty
+- Delete menu
+- Update menu title
+- Add menu item
+- Throw exception if menu item data is invalid
+- Remove menu item
+- Update menu item
+- Throw exception if menu item data is invalid
