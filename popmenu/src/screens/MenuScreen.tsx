@@ -18,7 +18,8 @@ interface Props {}
 const stickyIndicies = [0];
 
 const MenuScreen = (): React.ReactElement<Props> => {
-  const {menu, removeMenuItem} = useMenuContext();
+  const {state, removeMenuItem} = useMenuContext();
+  const {menu} = state;
   const theme = useTheme();
   const navigation = useNavigation<MenuScreenNavigationProp>();
 

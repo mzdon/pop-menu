@@ -3,6 +3,7 @@
 ## Level 1: Basics
 
 Create a Menu as a series of Menu Item Cards having:
+
 - Image (any image)
 - Title
 - Description
@@ -40,12 +41,14 @@ enum Currency {
 ## Level 2: Add and remove menu items
 
 Create an interface that enables users to create new Menu Items with:
+
 - URL to image
 - Title
 - Description
 - Price
 
 Present a control that enables to remove a Menu Item
+
 - Present a confirmation dialog before removal to verify
 
 Include unit tests
@@ -53,6 +56,7 @@ Include unit tests
 ### Approach
 
 #### New dependencies
+
 - @react-navigation
 - @react-native-fontawesome
 
@@ -73,6 +77,7 @@ interface MenuContext {
 ```
 
 Unit test:
+
 - Initial state
 - Add a menu item
 - Throw exception if data is invalid
@@ -81,6 +86,7 @@ Unit test:
 ## Level 3: Inline editing
 
 Present an interface that enables user to edit Menu Items inline with immediate updates:
+
 - URL to image
 - Title
 - Description
@@ -92,21 +98,25 @@ Include unit tests
 
 Change delete icon on MenuItemCard component to gear icon when pressed displays an alert to Edit or Delete. Delete shows confirmation alert still. Edit checks if there's an existing item being edited. If there is show an alert stating such and ask if a user wants to see that item or continue with editing this item.
 
-Items being edited will show confirm and cancel icons on the item and the fields will be displayed with an underline. Confirm will be disabled if the data is invalid.
+Items being edited will show a confirm and cancel icons on the item and the fields will be displayed with an underline. Confirm will be disabled if the data is invalid.
 
 ```TypeScript
 interface MenuContext {
   state: {
     data: Menu;
-    editableItemId: string | null
+    editingItem: MenuItem;
   },
   addMenuItem: (item: MenuItem) => void;
   removeMenuItem: (id: string) => void;
-  updateItem: (id: string, data: MenuItem) => void;
+  editMenuItem: (id: string) => void;
+  updateMenuItem: (id: string, data: MenuItem) => void;
+  saveMenuItem: () => void;
+  cancelEdit: () => void;
 }
 ```
 
 Unit test:
+
 - Updating an item
 - Throw exception if data is invalid
 
