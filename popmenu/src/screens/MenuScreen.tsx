@@ -2,8 +2,9 @@ import React from 'react';
 
 import {faPlus} from '@fortawesome/free-solid-svg-icons';
 import {useNavigation} from '@react-navigation/native';
-import {FlatList, ListRenderItem, StyleSheet, View} from 'react-native';
+import {Alert, FlatList, ListRenderItem, StyleSheet, View} from 'react-native';
 
+import EditableMenuItemCard from 'components/EditableMenuItemCard';
 import IconButton from 'components/IconButton';
 import MenuItemCard from 'components/MenuItemCard';
 import Spacer from 'components/Spacer';
@@ -18,7 +19,15 @@ interface Props {}
 const stickyIndicies = [0];
 
 const MenuScreen = (): React.ReactElement<Props> => {
-  const {menu, removeMenuItem} = useMenuContext();
+  const {
+    state,
+    removeMenuItem,
+    editMenuItem,
+    updateMenuItem,
+    saveMenuItem,
+    cancelEdit,
+  } = useMenuContext();
+  const {menu, editingItem} = state;
   const theme = useTheme();
   const navigation = useNavigation<MenuScreenNavigationProp>();
 
@@ -42,14 +51,42 @@ const MenuScreen = (): React.ReactElement<Props> => {
     </View>
   );
 
+  const scrollRef = React.useRef<FlatList | null>(null);
+  const scrollToEditingItem = () => {
+    const index = menu.items.findIndex(item => item.id === editingItem?.id);
+    scrollRef.current?.scrollToIndex({animated: true, index});
+  };
+
   const renderItem: ListRenderItem<MenuItem> = ({item}) => {
-    return <MenuItemCard item={item} onRemove={removeMenuItem} />;
+    if (editingItem?.id === item.id) {
+      return (
+        <EditableMenuItemCard
+          item={item}
+          onUpdate={updateMenuItem}
+          onSave={saveMenuItem}
+          onCancel={cancelEdit}
+        />
+      );
+    }
+    const onEdit = () => {
+      if (editingItem) {
+        Alert.alert('Another item is already being edited!', undefined, [
+          {text: 'Show Me', style: 'cancel', onPress: scrollToEditingItem},
+        ]);
+      } else {
+        editMenuItem(item.id);
+      }
+    };
+    return (
+      <MenuItemCard item={item} onEdit={onEdit} onRemove={removeMenuItem} />
+    );
   };
 
   return (
     <>
       <Spacer />
       <FlatList
+        ref={scrollRef}
         style={styles.container}
         data={menu.items}
         renderItem={renderItem}

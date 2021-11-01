@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faPencilAlt, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {Alert, StyleSheet, View} from 'react-native';
 
 import IconButton from 'components/IconButton';
@@ -8,15 +8,26 @@ import MenuItemImage from 'components/MenuItemImage';
 import Spacer from 'components/Spacer';
 import Text from 'components/Text';
 import {MenuItem} from 'models/MenuItem';
-import {baseFontSize, commonStyles, textStyles, useTheme} from 'styles';
+import {
+  baseFontSize,
+  basePadding,
+  commonStyles,
+  textStyles,
+  useTheme,
+} from 'styles';
 import {formatValue} from 'utils/MonetaryValue';
 
 interface Props {
   item: MenuItem;
+  onEdit: () => void;
   onRemove: (id: string) => void;
 }
 
-const MenuItemCard = ({item, onRemove}: Props): React.ReactElement<Props> => {
+const MenuItemCard = ({
+  item,
+  onEdit,
+  onRemove,
+}: Props): React.ReactElement<Props> => {
   const theme = useTheme();
 
   const {id, title, description, imageUrl, price} = item;
@@ -53,16 +64,29 @@ const MenuItemCard = ({item, onRemove}: Props): React.ReactElement<Props> => {
               {formattedPrice}
             </Text>
           </View>
-          <View
-            style={[
-              styles.deleteContainer,
-              {backgroundColor: theme.backgroundColor},
-            ]}>
-            <IconButton
-              icon={faTrash}
-              iconColor={theme.errorColor}
-              onPress={onVerifyRemove}
-            />
+          <View style={styles.actionsContainer}>
+            <View
+              style={[
+                styles.actionContainer,
+                {backgroundColor: theme.backgroundColor},
+              ]}>
+              <IconButton
+                icon={faPencilAlt}
+                iconColor={theme.ctaColor}
+                onPress={onEdit}
+              />
+            </View>
+            <View
+              style={[
+                styles.actionContainer,
+                {backgroundColor: theme.backgroundColor},
+              ]}>
+              <IconButton
+                icon={faTrash}
+                iconColor={theme.errorColor}
+                onPress={onVerifyRemove}
+              />
+            </View>
           </View>
         </MenuItemImage>
         <View style={styles.detailsContainer}>
@@ -106,12 +130,15 @@ const styles = StyleSheet.create({
     right: 20,
     borderTopEndRadius: 3,
   },
-  deleteContainer: {
-    ...commonStyles.shadow,
+  actionsContainer: {
     position: 'absolute',
-    top: 4,
-    right: 4,
+    top: 0,
+    right: basePadding * 0.5,
+  },
+  actionContainer: {
+    ...commonStyles.shadow,
     borderRadius: 25,
+    marginTop: basePadding * 0.5,
   },
   price: {
     lineHeight: baseFontSize * 1.5,

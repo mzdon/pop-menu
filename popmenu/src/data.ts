@@ -3,12 +3,16 @@ import {v4 as uuid} from 'uuid';
 import {Menu} from 'models/Menu';
 import {Currency} from 'models/MonetaryValue';
 
-export const mockMenu: Menu = {
-  id: uuid(),
+// keep ids consistent between getMockMenu calls
+const menuId = uuid();
+const itemIds = [uuid(), uuid(), uuid()];
+
+export const getMockMenu = (): Menu => ({
+  id: menuId,
   title: 'Super Cheezee Bucket',
   items: [
     {
-      id: uuid(),
+      id: itemIds[0],
       title:
         "Slammin' Ham 'n' Cheeze That's so Good It'll Blow Your Mind You Won't Even Believe It! Just Try It!",
       imageUrl:
@@ -21,7 +25,7 @@ export const mockMenu: Menu = {
       },
     },
     {
-      id: uuid(),
+      id: itemIds[1],
       title: 'Cheezer Dunkers',
       imageUrl:
         'https://tymbussanich.files.wordpress.com/2015/07/img_20150709_194959.jpg',
@@ -32,7 +36,7 @@ export const mockMenu: Menu = {
       },
     },
     {
-      id: uuid(),
+      id: itemIds[2],
       title: 'Something Without an Image',
       imageUrl: 'badUrl',
       description: "There's cheeze in here somewhere... I promise!",
@@ -42,4 +46,4 @@ export const mockMenu: Menu = {
       },
     },
   ],
-};
+});
